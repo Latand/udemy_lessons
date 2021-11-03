@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from functools import lru_cache
 
 from environs import Env
 from sqlalchemy.engine import URL
@@ -13,7 +12,6 @@ class DbConfig:
     database: str
     port: int
 
-    @lru_cache(maxsize=1024)
     def construct_sqlalchemy_url(self) -> URL:
         return URL.create(
             drivername="postgresql+asyncpg",
