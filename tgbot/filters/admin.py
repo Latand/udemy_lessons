@@ -1,6 +1,7 @@
 import typing
 
 from aiogram.dispatcher.filters import BoundFilter
+from aiogram.types import Message, CallbackQuery
 
 from tgbot.config import Config
 
@@ -8,10 +9,10 @@ from tgbot.config import Config
 class AdminFilter(BoundFilter):
     key = 'is_admin'
 
-    def __init__(self, is_admin: typing.Optional[bool] = None):
+    def __init__(self, is_admin: typing.Optional[bool] = None) -> None:
         self.is_admin = is_admin
 
-    async def check(self, obj):
+    async def check(self, obj: typing.Union[Message, CallbackQuery]) -> typing.Optional[bool]:
         if self.is_admin is None:
             return
         if not self.is_admin:

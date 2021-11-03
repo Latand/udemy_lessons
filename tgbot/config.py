@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+from functools import lru_cache
 
 from environs import Env
+from sqlalchemy.engine import URL
 
 
 @dataclass
@@ -9,6 +11,18 @@ class DbConfig:
     password: str
     user: str
     database: str
+    port: int
+
+    @lru_cache(maxsize=1024)
+    def construct_sqlalchemy_url(self) -> URL:
+        return URL.create(
+            drivername="postgresql+asyncpg",
+            username=self.user,
+            password=self.password,
+            host=self.host,
+            database=self.database,
+            port=self.port
+        )
 
 
 @dataclass
@@ -44,7 +58,8 @@ def load_config(path: str = None):
             host=env.str('DB_HOST'),
             password=env.str('DB_PASS'),
             user=env.str('DB_USER'),
-            database=env.str('DB_NAME')
+            database=env.str('DB_NAME'),
+            port=env.int('DB_PORT')
         ),
         misc=Miscellaneous()
     )
