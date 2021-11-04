@@ -17,6 +17,7 @@ class DatabaseMiddleware(LifetimeControllerMiddleware):
         session_pool: sessionmaker = obj.bot.get(SESSION_POOL_KEY)
         session: AsyncSession = session_pool()
         data["user_db"] = DatabaseContext(session, query_model=User)
+        data["session"] = session_pool()
 
     async def post_process(self, obj: TelegramObject, data: Dict, *args: Any) -> None:
         if session := data.get("session", None):
