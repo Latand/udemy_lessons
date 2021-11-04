@@ -4,7 +4,6 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from tgbot.config import load_config
@@ -18,7 +17,7 @@ target_metadata = DatabaseModel.metadata
 
 project_config = load_config()
 
-config.set_main_option("sqlalchemy.url", project_config.db.construct_sqlalchemy_url() )
+config.set_main_option("sqlalchemy.url", str(project_config.db.construct_sqlalchemy_url()))
 
 
 def run_migrations_offline():

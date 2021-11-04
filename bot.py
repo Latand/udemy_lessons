@@ -5,7 +5,6 @@ from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from aiogram.dispatcher.storage import BaseStorage
-from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
 from sqlalchemy.orm import sessionmaker
 
@@ -79,7 +78,8 @@ async def main():
         query_cache_size=1200,
         pool_size=100,
         max_overflow=200,
-        future=True
+        future=True,
+        echo=True
     )
     session_pool = sessionmaker(bind=engine, expire_on_commit=False, class_=AsyncSession)
     bot[SESSION_POOL_KEY] = session_pool
